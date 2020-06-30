@@ -14,6 +14,7 @@ module.exports.generatePdf = (billObject, corporateLinkageDetails, GSTRate) => {
     return new Promise(async (resolve, reject) => {
         debug("File path to render pdf.ejs file", renderFilePath);
         let imageToBase64 = await base64Img(logoPath);
+	debug("after imageToBase64")
         ejs.renderFile(renderFilePath, {
             billingObject: billObject,
             corporate: corporateLinkageDetails,
@@ -31,7 +32,9 @@ module.exports.generatePdf = (billObject, corporateLinkageDetails, GSTRate) => {
                     type: "pdf",
                     timeout: '100000'
                 };
+		debug("billobject is", billObject.utilityCode);
                 var filename = `${billObject.utilityCode}_${billObject.billPeriod}_${billObject.billNumber}_GeneratedBillNotification.pdf`;
+		debug("filename is", filename);
                 pdf.create(result, options).toFile(`${pdfStoragePath}${filename}`, function (err, res) {
                     if (err) {
                         console.log(err);
